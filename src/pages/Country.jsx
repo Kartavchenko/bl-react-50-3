@@ -1,13 +1,14 @@
 import { Section, Container, CountryInfo, Loader } from 'components';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { fetchCountry } from 'service/country-service';
 
 export const Country = () => {
   const [country, setCountry] = useState([]);
   const { countryId } = useParams();
 
+  const location = useLocation()
   useEffect(() => {
     const fetchCountryInfo = async () => {
       const data = await fetchCountry(countryId);
@@ -22,8 +23,10 @@ export const Country = () => {
   }
 
   return (
+    
     <Section>
       <Container>
+        <Link to={location?.state?.from || '/'}>GO BACK</Link>
         <CountryInfo countryInfo={country} />
       </Container>
     </Section>

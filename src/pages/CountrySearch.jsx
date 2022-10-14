@@ -8,15 +8,18 @@ import {
 } from 'components';
 import { useEffect, useState } from 'react';
 import { fetchByRegion } from 'service/country-service';
+import { useSearchParams } from 'react-router-dom';
+
+
 
 export const CountrySearch = () => {
-  const [query, setQuery] = useState('');
   const [countries, setCountries] = useState([]);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
-    if (!query) return;
+    const region = searchParams.get('region')
+    if (!region) return;
     const getByRgion = async () => {
-      const data = await fetchByRegion(query);
+      const data = await fetchByRegion(region);
       console.log(
         // '🚀 ~ file: CountrySearch.jsx ~ line 18 ~ getByRgion ~ data',
         data,
@@ -24,9 +27,9 @@ export const CountrySearch = () => {
       setCountries(data);
     };
     getByRgion();
-  }, [query]);
+  }, [searchParams]);
   const onSubmit = region => {
-    setQuery(region);
+       setSearchParams({region})
     // console.log("🚀 ~ file: CountrySearch.jsx ~ line 16 ~ onSubmit ~ query", query)
   };
 
